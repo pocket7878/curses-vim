@@ -8,9 +8,9 @@ Save buffer text and initialize buffer.
 Restore buffer text and some options.
 ** curses#erase()
 Replace all charactor in cursed-buffer by space.
-** curses#move(y, x)
+** curses#move(y, x) 
 Move cursor to (x , y) 
-(0, 0) is Left top corner.
+(1, 1) is Left top corner.
 ** cursor#addch(char)
 Replace charactor under cursor.
 ** cursor#insch(char)
