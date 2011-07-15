@@ -33,7 +33,7 @@ Erase from the cursor to the end of screen.
 Fill screen with a:char 
 ** curses#getch() 
 Get one charactor as string from user.
-* Sample code :function! CursorMoveSample()
+* Sample code :function! CursorMoveSample() 
     :        "Initialize screen
     :        call curses#initScr()
     :        "user input register
