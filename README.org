@@ -1,0 +1,19 @@
+* curses-vim
+A curses like buffer control library for vim.
+
+* How to use
+** curses#initScr()
+Save buffer text and initialize buffer.
+** curses#endWin()
+Restore buffer text and some options.
+** curses#erase()
+Replace all charactor in cursed-buffer by space.
+** curses#move(y, x)
+Move cursor to (x , y) 
+(0, 0) is Left top corner.
+** cursor#addch(char)
+Replace charactor under cursor.
+** cursor#insch(char)
+Insert charactor to cursor position.
+** cursor#delch()
+Replace charactor under cursor by space(delete charactor under cursor). 
