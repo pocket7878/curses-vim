@@ -11,21 +11,21 @@ Replace all charactor in cursed-buffer by space.
 ** curses#move(y, x) 
 Move cursor to (x , y) 
 (1, 1) is Left top corner.
-** cursor#addch(char)
+** curses#addch(char)
 Replace charactor under cursor.
-** cursor#mvaddch(y, x,char)
+** curses#mvaddch(y, x,char)
 Move cursor and replace charactor under cursor.
-** cursor#echochar(char)
+** curses#echochar(char)
 Replace charactor under cursor and refresh screen.
-** cursor#insch(char)
+** curses#insch(char)
 Insert charactor to cursor position.
-** cursor#mvinsch(char)
+** curses#mvinsch(char)
 Move cursor and insert charactor to cursor position.
-** cursor#delch() 
+** curses#delch() 
 Replace charactor under cursor by space(delete charactor under cursor). 
-** cursor#clrtoeol()
+** curses#clrtoeol()
 Erase from the cursor-line to the end of screen.
-** cursor#clrtobot()
+** curses#clrtobot() 
 Erase from the cursor to the end of screen.
-** cursor#fill(char)
+** curses#fill(char)
 Fill screen with a:char 
