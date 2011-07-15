@@ -21,7 +21,7 @@ Replace charactor under cursor and refresh screen.
 Move cursor and replace charactor under cursor and refresh screen.
 ** curses#insch(char)
 Insert charactor to cursor position.
-** curses#mvinsch(char)
+** curses#mvinsch(char) 
 Move cursor and insert charactor to cursor position.
 ** curses#delch() 
 Replace charactor under cursor by space(delete charactor under cursor). 
@@ -33,3 +33,31 @@ Erase from the cursor to the end of screen.
 Fill screen with a:char 
 ** curses#getch() 
 Get one charactor as string from user.
+* Sample code :function! CursorMoveSample()
+    :        "Initialize screen
+    :        call curses#initScr()
+    :        "user input register
+    :        let l:ch = ''
+    :        "Cursor point register
+    :        let l:currentCursorX = 1
+    :        let l:currentCursorY = 1
+    :        "Move cursor startpoint and draw first star
+    :        call curses#mvechochar(l:currentCursorY, l:currentCursorX,'*')
+    :        for i in range(0,100)
+    :                "Get cursor key
+    :                let l:ch = curses#getch()
+    :                "Move cursor
+    :                if l:ch ==# 'h'
+    :                        let l:currentCursorX -= 1
+    :                elseif l:ch ==# 'j'
+    :                        let l:currentCursorY += 1
+    :                elseif l:ch ==# 'k'
+    :                        let l:currentCursorY -= 1
+    :                elseif l:ch ==# 'l'
+    :                        let l:currentCursorX += 1
+    :                endif
+    :                "Draw star
+    :                call curses#mvechochar(l:currentCursorY, l:currentCursorX,'*')
+    :        endfor
+    :        call curses#endWin()
+    :endfunction 
