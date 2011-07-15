@@ -13,7 +13,19 @@ Move cursor to (x , y)
 (1, 1) is Left top corner.
 ** cursor#addch(char)
 Replace charactor under cursor.
+** cursor#mvaddch(y, x,char)
+Move cursor and replace charactor under cursor.
+** cursor#echochar(char)
+Replace charactor under cursor and refresh screen.
 ** cursor#insch(char)
 Insert charactor to cursor position.
+** cursor#mvinsch(char)
+Move cursor and insert charactor to cursor position.
 ** cursor#delch() 
 Replace charactor under cursor by space(delete charactor under cursor). 
+** cursor#clrtoeol()
+Erase from the cursor-line to the end of screen.
+** cursor#clrtobot()
+Erase from the cursor to the end of screen.
+** cursor#fill(char)
+Fill screen with a:char 

@@ -73,6 +73,25 @@ function! curses#addch(char)
         exec "normal l"
 endfunction
 
+function! curses#mvaddch(y, x, char)
+        call curses#move(a:y, a:x)
+        "Get line as arry
+        let l:curLine = split(getline('.'),'\zs')
+        "Get cursor pos
+        let l:curPos = getpos('.')
+        "Replace charactor
+        let l:curLine[l:curPos[2] - 1] = a:char
+        "Replace line
+        call setline('.',join(l:curLine, ''))
+        "Forword cursor
+        exec "normal l"
+endfunction
+
+function! curses#echochar(char)
+        call curses#addch(a:char)
+        redraw!
+endfunction
+
 function! curses#insch(char)
         "Get line as arry
         let l:curLine = split(getline('.'),'\zs')
@@ -84,6 +103,19 @@ function! curses#insch(char)
         call setline('.',join(l:curLine, ''))
 endfunction
 
+function! curses#mvinsch(y, x, char)
+        call curses#move(a:y, a:x)
+        "Get line as arry
+        let l:curLine = split(getline('.'),'\zs')
+        "Get cursor pos
+        let l:curPos = getpos('.')
+        "Replace charactor
+        call insert(l:curLine, a:char, l:curPos[2])
+        "Replace line
+        call setline('.',join(l:curLine, ''))
+endfunction
+
+
 function! curses#delch()
         "Get line as arry
         let l:curLine = split(getline('.'),'\zs')
@@ -93,4 +125,29 @@ function! curses#delch()
         let l:curLine[l:curPos[2]] = ' '
         "Replace line
         call setline('.',join(l:curLine, ''))
+endfunction
+
+function! curses#fill(char)
+        "Fill window by a:char
+        for i in range(1,winheight('%'))
+                call setline(i, repeat(a:char, winwidth(0)))
+        endfor
+endfunction
+
+function! curses#clrtoeol()
+        let l:curPos = getpos('.')
+        for i in range(l:curPos[1],winheight('%'))
+                call setline(i, repeat(' ', winwidth(0)))
+        endfor
+endfunction
+
+function! curses#clrtobot()
+        let l:curPos = getpos('.')
+        let l:curLine = split(getline('.'),'\zs')
+        for i in range(l:curPos[2],len(l:curLine))
+                l:curLine[i-1] = ' '
+        endfor
+        for i in range(l:curPos[1] + 1,winheight('%'))
+                call setline(i, repeat(' ', winwidth(0)))
+        endfor
 endfunction
