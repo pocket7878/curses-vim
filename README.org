@@ -17,6 +17,8 @@ Replace charactor under cursor.
 Move cursor and replace charactor under cursor.
 ** curses#echochar(char)
 Replace charactor under cursor and refresh screen.
+** curses#mvechochar(y, x,char)
+Move cursor and replace charactor under cursor and refresh screen.
 ** curses#insch(char)
 Insert charactor to cursor position.
 ** curses#mvinsch(char)
@@ -29,3 +31,5 @@ Erase from the cursor-line to the end of screen.
 Erase from the cursor to the end of screen.
 ** curses#fill(char)
 Fill screen with a:char 
+** curses#getch() 
+Get one charactor as string from user.
