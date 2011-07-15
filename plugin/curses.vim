@@ -17,7 +17,7 @@ function! curses#initScr()
                 let b:numOpt = &number 
                 set nonumber
                 "Buffer line buffer.
-                let b:buff = []
+                let b:buff = [] 
                 "Save buffer data
                 for i in range(1, s:getbufHeight())
                         call add(b:buff, getline(i))
@@ -26,7 +26,7 @@ function! curses#initScr()
                 silent % delete _
                 "Fill window by space
                 for i in range(1,winheight('%'))
-                        call setline(i, repeat(' ', winwidth(i)-1))
+                        call setline(i, repeat(' ', winwidth(0)-1))
                 endfor
                 "set cursed flag
                 let b:bufCursed = 1       
@@ -52,12 +52,12 @@ endfunction
 function! curses#erase()
         "Fill window by space
         for i in range(1,winheight('%'))
-                call setline(i, repeat(' ', winwidth(i)))
+                call setline(i, repeat(' ', winwidth(0)))
         endfor
 endfunction
 
 function! curses#move(y, x)
-        call setpos('.', [0, a:y, a:x, 0])
+        call setpos('.', [bufnr('%'), a:y, a:x, 0])
 endfunction
 
 function! curses#addch(char)
@@ -66,7 +66,7 @@ function! curses#addch(char)
         "Get cursor pos
         let l:curPos = getpos('.')
         "Replace charactor
-        let l:curLine[l:curPos[2]] = a:char
+        let l:curLine[l:curPos[2] - 1] = a:char
         "Replace line
         call setline('.',join(l:curLine, ''))
         "Forword cursor

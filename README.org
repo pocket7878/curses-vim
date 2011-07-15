@@ -15,5 +15,5 @@ Move cursor to (x , y)
 Replace charactor under cursor.
 ** cursor#insch(char)
 Insert charactor to cursor position.
-** cursor#delch()
+** cursor#delch() 
 Replace charactor under cursor by space(delete charactor under cursor). 
