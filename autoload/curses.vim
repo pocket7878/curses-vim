@@ -12,6 +12,22 @@ EOM
         return l:height
 endfunction
 
+function! s:max(a, b)
+        if a:a >= a:b
+                return a:a
+        else
+                return a:b
+        endif
+endfunction
+
+function! s:min(a, b)
+        if a:a <= a:b
+                return a:a
+        else
+                return a:b
+        endif
+endfunction
+
 function! curses#initScr()
         "if Buffer does'nt cursed
         if !exists('b:bufCursed')
@@ -38,7 +54,7 @@ function! curses#initScr()
                         let b:timeout = -1
                 endif
                 "refresh screen
-                redraw!
+                redraw
         endif
 endfunction
 
@@ -63,6 +79,7 @@ function! curses#erase()
         for i in range(1,winheight('%'))
                 call setline(i, repeat(' ', winwidth(0)))
         endfor
+        redraw
 endfunction
 
 function! curses#move(y, x)
@@ -98,12 +115,12 @@ endfunction
 
 function! curses#echochar(char)
         call curses#addch(a:char)
-        redraw!
+        redraw
 endfunction
 
 function! curses#mvechochar(y, x, char)
         call curses#mvaddch(a:y, a:x, a:char)
-        redraw!
+        redraw
 endfunction
 
 function! curses#insch(char)
@@ -148,11 +165,17 @@ function! curses#fill(char)
         endfor
 endfunction
 
+function! curses#clrline(linum)
+        call setline(a:linum, repeat(' ', winwidth(0)))
+        redraw
+endfunction
+
 function! curses#clrtoeol()
         let l:curPos = getpos('.')
         for i in range(l:curPos[1],winheight('%'))
                 call setline(i, repeat(' ', winwidth(0)))
         endfor
+        redraw
 endfunction
 
 function! curses#clrtobot()
@@ -164,6 +187,7 @@ function! curses#clrtobot()
         for i in range(l:curPos[1] + 1,winheight('%'))
                 call setline(i, repeat(' ', winwidth(0)))
         endfor
+        redraw
 endfunction
 
 function! curses#getch()
@@ -181,4 +205,36 @@ endfunction
 
 function! curses#timeout(milli)
         let b:timeout = a:milli
+endfunction
+
+function! curses#printw(str)
+        "Given str as arry
+        let l:strArry = split(a:str,'\zs')
+        "Get line as arry
+        let l:curLine = split(getline('.'),'\zs')
+        "Get cursor pos
+        let l:curPos = getpos('.')
+        "Replace charactor
+        for i in range(l:curPos[2], l:curPos[2] + s:min(len(l:strArry), len(l:curLine)) - 1)
+                let l:curLine[i-1] = l:strArry[i-l:curPos[2]]
+        endfor
+        "Replace line
+        call setline('.',join(l:curLine, ''))
+endfunction
+
+function! curses#mvprintw(y, x, str)
+        "Move cursor
+        call curses#move(a:y, a:x)
+        "Given str as arry
+        let l:strArry = split(a:str,'\zs')
+        "Get line as arry
+        let l:curLine = split(getline('.'),'\zs')
+        "Get cursor pos
+        let l:curPos = getpos('.')
+        "Replace charactor
+        for i in range(l:curPos[2], l:curPos[2] + s:min(len(l:strArry), len(l:curLine)) - 1)
+                let l:curLine[i-1] = l:strArry[i-l:curPos[2]]
+        endfor
+        "Replace line
+        call setline('.',join(l:curLine, ''))
 endfunction

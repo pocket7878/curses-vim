@@ -25,6 +25,8 @@ Insert charactor to cursor position.
 Move cursor and insert charactor to cursor position.
 ** curses#delch() 
 Replace charactor under cursor by space(delete charactor under cursor). 
+** curses#clrline(linum)
+Erase line.
 ** curses#clrtoeol()
 Erase from the cursor-line to the end of screen.
 ** curses#clrtobot() 
@@ -33,6 +35,12 @@ Erase from the cursor to the end of screen.
 Fill screen with a:char 
 ** curses#getch() 
 Get one charactor as string from user.
+** curses#timeout(milli)  
+Set getch() timeout milli-second.
+** curses#printw(str)
+Print String on screen.
+** curses#mvprintw(y, x,str)
+Move cursor and print String on screen.
 * Sample code 
  
     :function! CursorMoveSample() 
