@@ -30,8 +30,13 @@ function! curses#initScr()
                 for i in range(1,winheight('%'))
                         call setline(i, repeat(' ', winwidth(0)-1))
                 endfor
+                "" Initialize buffer local variables
                 "set cursed flag
                 let b:bufCursed = 1       
+                "reset timeout if it already setup
+                if exists('b:timeout')
+                        let b:timeout = -1
+                endif
                 "refresh screen
                 redraw!
         endif
@@ -162,5 +167,18 @@ function! curses#clrtobot()
 endfunction
 
 function! curses#getch()
-        return s:V.getchar()
+        if !exists('b:timeout') || b:timeout < 0 
+                return s:V.getchar()
+        else
+                let l:k = b:timeout
+                while  l:k > 0 && s:V.getchar(1) == 0
+                        sleep 10m
+                        let l:k = l:k - 10
+                endwh
+                return s:V.getchar(1)
+        endif
+endfunction
+
+function! curses#timeout(milli)
+        let b:timeout = a:milli
 endfunction
