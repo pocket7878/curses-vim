@@ -238,3 +238,5 @@ function! curses#mvprintw(y, x, str)
         "Replace line
         call setline('.',join(l:curLine, ''))
 endfunction
+
+"Load some hight-level function
