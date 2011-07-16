@@ -34,6 +34,8 @@ function! curses#initScr()
                 "Save line number option
                 let b:numOpt = &number 
                 set nonumber
+                let b:wrapOpt = &wrap
+                set nowrap
                 "Buffer line buffer.
                 let b:buff = [] 
                 "Save buffer data
@@ -69,6 +71,9 @@ function! curses#endWin()
                 "Set number option
                 if b:numOpt == 1
                         set number
+                endif
+                if b:wrapOpt == 1
+                        set wrap
                 endif
                 unlet b:bufCursed
         endif
@@ -214,7 +219,9 @@ function! curses#printw(str)
         let l:curLine = split(getline('.'),'\zs')
         "Get cursor pos
         let l:curPos = getpos('.')
-        "Replace charactor
+        "difference display str size and str len
+        let l:diff = s:V.wcswidth(a:str)-s:V.strchars(a:str)
+        "Replace charactor and resize line buf
         for i in range(l:curPos[2], l:curPos[2] + s:min(len(l:strArry), len(l:curLine)) - 1)
                 let l:curLine[i-1] = l:strArry[i-l:curPos[2]]
         endfor
