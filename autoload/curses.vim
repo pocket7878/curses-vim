@@ -1,6 +1,6 @@
 let s:V = vital#of('curses_vim')
 
-function! s:getbufHeight()
+function! s:getbufHeight()"{{{
         let l:height = 0
         python<<EOM
 import vim
@@ -10,25 +10,25 @@ def getBufHeight():
 vim.command('let l:height=%s' % getBufHeight())
 EOM
         return l:height
-endfunction
+endfunction"}}}
 
-function! s:max(a, b)
+function! s:max(a, b)"{{{
         if a:a >= a:b
                 return a:a
         else
                 return a:b
         endif
-endfunction
+endfunction"}}}
 
-function! s:min(a, b)
+function! s:min(a, b)"{{{
         if a:a <= a:b
                 return a:a
         else
                 return a:b
         endif
-endfunction
+endfunction"}}}
 
-function! curses#initScr()
+function! curses#initScr()"{{{
         "if Buffer does'nt cursed
         if !exists('b:bufCursed')
                 "Save line number option
@@ -58,9 +58,9 @@ function! curses#initScr()
                 "refresh screen
                 redraw
         endif
-endfunction
+endfunction"}}}
 
-function! curses#endWin()
+function! curses#endWin()"{{{
         if b:bufCursed == 1
                 "clean buffer
                 silent % delete _
@@ -77,21 +77,21 @@ function! curses#endWin()
                 endif
                 unlet b:bufCursed
         endif
-endfunction
+endfunction"}}}
 
-function! curses#erase()
+function! curses#erase()"{{{
         "Fill window by space
         for i in range(1,winheight('%'))
                 call setline(i, repeat(' ', winwidth(0)))
         endfor
         redraw
-endfunction
+endfunction"}}}
 
-function! curses#move(y, x)
+function! curses#move(y, x)"{{{
         call setpos('.', [bufnr('%'), a:y, a:x, 0])
-endfunction
+endfunction"}}}
 
-function! curses#addch(char)
+function! curses#addch(char)"{{{
         "Get line as arry
         let l:curLine = split(getline('.'),'\zs')
         "Get cursor pos
@@ -102,9 +102,9 @@ function! curses#addch(char)
         call setline('.',join(l:curLine, ''))
         "Forword cursor
         exec "normal l"
-endfunction
+endfunction"}}}
 
-function! curses#mvaddch(y, x, char)
+function! curses#mvaddch(y, x, char)"{{{
         call curses#move(a:y, a:x)
         "Get line as arry
         let l:curLine = split(getline('.'),'\zs')
@@ -116,19 +116,19 @@ function! curses#mvaddch(y, x, char)
         call setline('.',join(l:curLine, ''))
         "Forword cursor
         exec "normal l"
-endfunction
+endfunction"}}}
 
-function! curses#echochar(char)
+function! curses#echochar(char)"{{{
         call curses#addch(a:char)
         redraw
-endfunction
+endfunction"}}}
 
-function! curses#mvechochar(y, x, char)
+function! curses#mvechochar(y, x, char)"{{{
         call curses#mvaddch(a:y, a:x, a:char)
         redraw
-endfunction
+endfunction"}}}
 
-function! curses#insch(char)
+function! curses#insch(char)"{{{
         "Get line as arry
         let l:curLine = split(getline('.'),'\zs')
         "Get cursor pos
@@ -137,9 +137,9 @@ function! curses#insch(char)
         call insert(l:curLine, a:char, l:curPos[2])
         "Replace line
         call setline('.',join(l:curLine, ''))
-endfunction
+endfunction"}}}
 
-function! curses#mvinsch(y, x, char)
+function! curses#mvinsch(y, x, char)"{{{
         call curses#move(a:y, a:x)
         "Get line as arry
         let l:curLine = split(getline('.'),'\zs')
@@ -149,10 +149,9 @@ function! curses#mvinsch(y, x, char)
         call insert(l:curLine, a:char, l:curPos[2])
         "Replace line
         call setline('.',join(l:curLine, ''))
-endfunction
+endfunction"}}}
 
-
-function! curses#delch()
+function! curses#delch()"{{{
         "Get line as arry
         let l:curLine = split(getline('.'),'\zs')
         "Get cursor pos
@@ -161,29 +160,29 @@ function! curses#delch()
         let l:curLine[l:curPos[2]] = ' '
         "Replace line
         call setline('.',join(l:curLine, ''))
-endfunction
+endfunction"}}}
 
-function! curses#fill(char)
+function! curses#fill(char)"{{{
         "Fill window by a:char
         for i in range(1,winheight('%'))
                 call setline(i, repeat(a:char, winwidth(0)))
         endfor
-endfunction
+endfunction"}}}
 
-function! curses#clrline(linum)
+function! curses#clrline(linum)"{{{
         call setline(a:linum, repeat(' ', winwidth(0)))
         redraw
-endfunction
+endfunction"}}}
 
-function! curses#clrtoeol()
+function! curses#clrtoeol()"{{{
         let l:curPos = getpos('.')
         for i in range(l:curPos[1],winheight('%'))
                 call setline(i, repeat(' ', winwidth(0)))
         endfor
         redraw
-endfunction
+endfunction"}}}
 
-function! curses#clrtobot()
+function! curses#clrtobot()"{{{
         let l:curPos = getpos('.')
         let l:curLine = split(getline('.'),'\zs')
         for i in range(l:curPos[2],len(l:curLine))
@@ -193,9 +192,9 @@ function! curses#clrtobot()
                 call setline(i, repeat(' ', winwidth(0)))
         endfor
         redraw
-endfunction
+endfunction"}}}
 
-function! curses#getch()
+function! curses#getch()"{{{
         if !exists('b:timeout') || b:timeout < 0 
                 return s:V.getchar()
         else
@@ -206,13 +205,13 @@ function! curses#getch()
                 endwh
                 return s:V.getchar(1)
         endif
-endfunction
+endfunction"}}}
 
-function! curses#timeout(milli)
+function! curses#timeout(milli)"{{{
         let b:timeout = a:milli
-endfunction
+endfunction"}}}
 
-function! curses#printw(str)
+function! curses#printw(str)"{{{
         "Given str as arry
         let l:strArry = split(a:str,'\zs')
         "Get line as arry
@@ -227,9 +226,9 @@ function! curses#printw(str)
         endfor
         "Replace line
         call setline('.',join(l:curLine, ''))
-endfunction
+endfunction"}}}
 
-function! curses#mvprintw(y, x, str)
+function! curses#mvprintw(y, x, str)"{{{
         "Move cursor
         call curses#move(a:y, a:x)
         "Given str as arry
@@ -244,6 +243,4 @@ function! curses#mvprintw(y, x, str)
         endfor
         "Replace line
         call setline('.',join(l:curLine, ''))
-endfunction
-
-"Load some hight-level function
+endfunction"}}}

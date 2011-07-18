@@ -1,0 +1,234 @@
+*curses-vim.txt* cursesのようにvimのバッファを操作するためのライブラリ	
+
+Version: 1.0
+Author : Pocket7878 <pocket7878@gmail.com>
+License: MIT license  {{{
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+CONTENTS						*curses-vim-contents*
+
+Introduction		|curses-vim-introduction|
+Install			|curses-vim-install|
+Interface		|curses-vim-interface|
+  Functions		  |curses-vim-functions|
+Examples		|curses-vim-examples|
+ToDo			|curses-vim-todo|
+Bugs			|curses-vim-bugs|
+
+==============================================================================
+INTRODUCTION						*curses-vim-introduction*
+
+curses-vimは端末操作ライブラリcursesのようにVimのバッファーを操作する
+ことを可能にするライブラリです。
+
+==============================================================================
+USAGE							*curses-vim-usage*
+
+curses-vimはcursesとおなじようにcurses#initScr()を実行してバッファーを初期化
+してから各種関数を実行します。初期化時にバッファ上のコンテンツは見えなくなりま
+すが、curses#endWin()を実行するときちんと復帰されます。
+
+==============================================================================
+INTERFACE						*curses-vim-interface*
+
+------------------------------------------------------------------------------
+FUNCTIONS 						*curses-vim-functions*
+
+curses#initScr()					*curses#initScr()*
+			実行時のバッファーのデータをバックアップして初期化します。	
+			バックアップに利用される変数はb:buffという変数です。	
+
+curses#endWin()						*curses#endWin()*
+			バッファをクリアしてb:buffからinitScr()される直前のバッファの
+			コンテンツを復帰させます。
+
+curses#erase()						*curses#erase()*
+			バッファをクリアして空白でうめます
+
+curses#move(y,x)					*curses#move()*
+			カーソルをy行目のx文字目に移動します
+
+curses#addch(char)					*curses#addch()*
+			カーソル位置の文字をcharで置換します。
+			また、それにともなってカーソルが1つ右に移動します
+
+curses#mvaddch(y, x,char)				*curses#mvaddch()*
+			カーソルをy行目のx文字目に移動してから
+			カーソル位置の文字をcharで置換します。
+			また、それにともなってカーソルが1つ右に移動します
+
+curses#echochar(char)					*curses#echochar()*
+			カーソル位置の文字をcharで置換してから
+			すぐに反映します
+
+curses#mvechochar(y, x,char)				*curses#mvechochar()*
+			カーソルをy行目のx文字目に移動して
+			カーソル位置の文字をcharで置換してから
+			すぐに反映します
+curses#insch(char)					*curses#insch()*
+			カーソル位置にcharを追加します。
+			また、それにともなって既存の文字は一文字づず右に移動
+			します
+
+curses#mvinsch(y, x,char)				*curses#mvinsch()*
+			カーソルをy行目のx文字目に移動して
+			カーソル位置にcharを追加します。
+			また、それにともなって既存の文字は一文字づず右に移動
+			します
+curses#delch()						*curses#delch()*
+			カーソル位置の文字を削除します
+
+curses#fill(char)					*curses#fill()*
+			バッファをcharで埋めます。背景を特定の文字で埋めたいとき
+			などに利用してください.
+
+curses#clrline(linum)					*curses#clrline(()*
+			現在のカーソル行をクリアします
+
+curses#clrtoeol()					*curses#clrtoeol()*
+			現在のカーソル行以降の行をクリアします
+
+curses#clrtobot()					*curses#clrtobot()*
+			現在のカーソル位置以降をクリアします
+
+curses#getch()						*curses#getch()*
+			ユーザーから1文字の入力を受け、それを文字で返却します
+
+curses#timeout(milli)					*curses#timeout()*
+			|curses#getch()|の入力のタイムアウト時間をミリ秒単位で
+			設定します
+
+curses#printw(str)					*curses#printw()*
+			現在のカーソル位置を先頭に文字列を出力します
+
+curses#mvprintw(y, x,str)				*curses#mvprintw()*
+			カーソルをy行目のx文字目に移動して
+			カーソル位置を先頭に文字列を出力します
+
+curses#display#cprintw(str)				*curses#display#cprintw()*
+			現在のカーソル行に中央ぞろえに文字列を出力します
+
+curses#display#mvcprintw(y,str)				*curses#display#mvcprintw()*
+			カーソルをy行目に移動して
+			その行に中央ぞろえに文字列を出力します
+
+curses#display#printList(dot, List)			*curses#display#printList()*
+			現在のカーソル位置を左上の角にして
+			リストをdotをアクセントに出力します
+
+curses#display#mvprintList(y,x,dot, List)		*curses#display#mvprintList()*
+			(x, y)を左上の角にして
+			リストをdotをアクセントに出力します
+
+curses#display#nprintList(List)				*curses#display#nprintList()*
+			現在のカーソル位置を左上の角にして
+			リストを番号を付けて出力します
+
+curses#display#mvnprintList(y,x,List)			*curses#display#mvnprintList()*
+			(x, y)を左上の角にして
+			リストを番号を付けて出力します
+
+curses#display#cprintList(dot,List)			*curses#display#cprintList()*
+			現在の行から下に、リスト全体が画面に中央ぞろえに
+			なるようにリストをdotをアクセントに出力します
+
+curses#display#mvcprintList(y,dot,List)			*curses#display#mvcprintList()*
+			カーソルをy行目に移動してその行から下にリスト全体が
+			画面に中央ぞろえになるようにリストをdotをアクセント
+			に出力します
+
+curses#display#cnprintList(List)			*curses#display#cnprintList()*
+			現在のカーソル行から下に番号つきリストをリスト全体
+			が画面に中央ぞろえになるようにリストを番号を付けて
+			出力します
+
+curses#display#mvcnprintList(y,List)			*curses#display#mvcnprintList()*
+			カーソルをy行目に移動してその行から下に番号つき
+			リストをリスト全体が画面に中央ぞろえになるように
+			リストを番号を付けて出力します
+
+curses#display#printhl()				*curses#display#printhl()*
+			現在の行に'-'を利用した横線を引きます
+
+curses#display#mvprinthl(y)				*curses#display#mvprinthl()*
+			カーソルをy行目に移動してその行に'-'を利用した横線を引きます
+
+curses#info#curPosX()					*curses#info#curPosX()*
+			現在のカーソルのX座標をかえします
+
+curses#info#curPosY()					*curses#info#curPosY()*
+			現在のカーソルのY座標をかえします
+
+curses#info#curPos()					*curses#info#curPos()*
+			現在のカーソルの座標を[y, x]の配列でかえします
+
+curses#info#cols()					*curses#info#cols()*
+			現在のウィンドウの横幅をかえします
+
+curses#info#rows()					*curses#info#rows()*
+			現在のウィンドウの縦幅をかえします
+
+curses#info#size()					*curses#info#size()*
+			現在のウィンドウのサイズを[height, width]の配列で
+			かえします
+==============================================================================
+EXAMPLES						*curses-vim-examples*
+>
+	function! CursorMoveSample() 
+		"Initialize screen
+		call curses#initScr()
+		"user input register
+		let l:ch = ''
+		"Cursor position register
+		let l:currentCursorX = 1
+		let l:currentCursorY = 1
+		"Move cursor startpoint and draw first star
+		call curses#mvechochar(l:currentCursorY, l:currentCursorX,'*')
+		for i in range(0,100)
+			"Get cursor key
+			let l:ch = curses#getch()
+			"Move cursor
+			if l:ch ==# 'h'
+				let l:currentCursorX -= 1
+			elseif l:ch ==# 'j'
+				let l:currentCursorY += 1
+			elseif l:ch ==# 'k'
+				let l:currentCursorY -= 1
+			elseif l:ch ==# 'l'
+				let l:currentCursorX += 1
+			endif
+			"Draw star
+			call curses#mvechochar(l:currentCursorY, l:currentCursorX,'*')
+		endfor
+		call curses#endWin()
+	endfunction 
+<
+
+バッファーを初期化してh,j,k,lでカーソルを移動して、
+それにあわせて*を出力します。100回移動したら終了し、バッファを復帰させます
+
+==============================================================================
+TODO							*curses-vim-todo*
+
+==============================================================================
+BUGS							*curses-vim-bugs*
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:isk+=-:
