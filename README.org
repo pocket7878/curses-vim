@@ -1,1 +1,2 @@
-## A curses like buffer control library for vim.  
+# curses-vim
+A curses like buffer control library for vim.   
