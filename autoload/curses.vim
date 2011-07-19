@@ -23,11 +23,18 @@ endfunction"}}}
 function! curses#initScr()"{{{
         "if Buffer does'nt cursed
         if !exists('b:bufCursed')
-                "Save line number option
+                "Save some options
                 let b:numOpt = &number 
-                set nonumber
+                setlocal nonumber
                 let b:wrapOpt = &wrap
-                set nowrap
+                setlocal nowrap
+                if v:version >= 703
+                        let b:colorColumnOpt = &colorcolumn
+                        setlocal colorcolumn=0
+                endif
+                let b:listOpt = &list
+                setlocal nolist
+
                 "Buffer line buffer.
                 let b:buff = [] 
                 "Save buffer data
@@ -60,12 +67,18 @@ function! curses#endWin()"{{{
                 for i in range(1, len(b:buff))
                         call setline(i, b:buff[i - 1])
                 endfor
-                "Set number option
+                "Reset options
                 if b:numOpt == 1
-                        set number
+                        setlocal number
                 endif
                 if b:wrapOpt == 1
-                        set wrap
+                        setlocal wrap
+                endif
+                if !exists('b:colorColumnOpt')
+                        setlocal colorcolumn=b:colorColumnOpt
+                endif
+                if b:listOpt == 1
+                        setlocal list
                 endif
                 unlet b:bufCursed
         endif
