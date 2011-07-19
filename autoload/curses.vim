@@ -1,15 +1,7 @@
 let s:V = vital#of('curses_vim')
 
 function! s:getbufHeight()"{{{
-        let l:height = 0
-        python<<EOM
-import vim
-def getBufHeight():
-        buf = vim.current.buffer
-        return len(buf)
-vim.command('let l:height=%s' % getBufHeight())
-EOM
-        return l:height
+        return line('$')
 endfunction"}}}
 
 function! s:max(a, b)"{{{
