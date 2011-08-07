@@ -164,10 +164,10 @@ curses#display#mvcnprintList(y,List)			*curses#display#mvcnprintList()*
 			リストをリスト全体が画面に中央ぞろえになるように
 			リストを番号を付けて出力します
 
-curses#display#printhl()				*curses#display#printhl()*
+curses#display#printhr()				*curses#display#printhr()*
 			現在の行に'-'を利用した横線を引きます
 
-curses#display#mvprinthl(y)				*curses#display#mvprinthl()*
+curses#display#mvprinthr(y)				*curses#display#mvprinthr()*
 			カーソルをy行目に移動してその行に'-'を利用した横線を引きます
 
 curses#info#curPosX()					*curses#info#curPosX()*

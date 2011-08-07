@@ -90,11 +90,11 @@ function! curses#display#mvcnprintList(y,list)"{{{
         call curses#display#mvnprintList(a:y, curses#info#cols()/2 - (l:maxLen/2), a:list)
 endfunction"}}}
 
-function! curses#display#printhl()"{{{
+function! curses#display#printhr()"{{{
         "Print holizontal line
         call curses#printw(repeat('-',curses#info#cols()))
 endfunction"}}}
 
-function! curses#display#mvprinthl(y)"{{{
+function! curses#display#mvprinthr(y)"{{{
         call curses#mvprintw(a:y, 1, repeat('-',curses#info#cols()))
 endfunction"}}}
