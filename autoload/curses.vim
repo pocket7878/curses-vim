@@ -1,7 +1,15 @@
 let s:V = vital#of('curses_vim')
 
 function! s:getbufHeight()"{{{
-        return line('$')
+        let l:height = 0
+        python<<EOM
+import vim
+def getBufHeight():
+        buf = vim.current.buffer
+        return len(buf)
+vim.command('let l:height=%s' % getBufHeight())
+EOM
+        return l:height
 endfunction"}}}
 
 function! s:max(a, b)"{{{
@@ -23,18 +31,11 @@ endfunction"}}}
 function! curses#initScr()"{{{
         "if Buffer does'nt cursed
         if !exists('b:bufCursed')
-                "Save some options
+                "Save line number option
                 let b:numOpt = &number 
-                setlocal nonumber
+                set nonumber
                 let b:wrapOpt = &wrap
-                setlocal nowrap
-                if v:version >= 703
-                        let b:colorColumnOpt = &colorcolumn
-                        setlocal colorcolumn=0
-                endif
-                let b:listOpt = &list
-                setlocal nolist
-
+                set nowrap
                 "Buffer line buffer.
                 let b:buff = [] 
                 "Save buffer data
@@ -67,18 +68,12 @@ function! curses#endWin()"{{{
                 for i in range(1, len(b:buff))
                         call setline(i, b:buff[i - 1])
                 endfor
-                "Reset options
+                "Set number option
                 if b:numOpt == 1
-                        setlocal number
+                        set number
                 endif
                 if b:wrapOpt == 1
-                        setlocal wrap
-                endif
-                if !exists('b:colorColumnOpt')
-                        setlocal colorcolumn=b:colorColumnOpt
-                endif
-                if b:listOpt == 1
-                        setlocal list
+                        set wrap
                 endif
                 unlet b:bufCursed
         endif
